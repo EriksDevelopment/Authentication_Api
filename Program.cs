@@ -1,5 +1,10 @@
 using System.Text;
+using Authentication_Api.Core.Interfaces;
+using Authentication_Api.Core.Services;
+using Authentication_Api.Core.Services.JwtServices;
 using Authentication_Api.Data;
+using Authentication_Api.Data.Interfaces;
+using Authentication_Api.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -64,6 +69,10 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

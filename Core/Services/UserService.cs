@@ -2,7 +2,6 @@ using Authentication_Api.Core.Interfaces;
 using Authentication_Api.Core.Services.JwtServices;
 using Authentication_Api.Data.Dtos;
 using Authentication_Api.Data.Interfaces;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Authentication_Api.Core.Services
 {
