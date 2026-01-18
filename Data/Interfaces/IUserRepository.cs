@@ -4,6 +4,6 @@ namespace Authentication_Api.Data.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User?> GetUserByUserNameAsync(string username);
+        Task<User?> GetUserByUserNameAsync(string userName);
     }
 }
