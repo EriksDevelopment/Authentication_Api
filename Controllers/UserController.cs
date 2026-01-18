@@ -1,0 +1,47 @@
+using Authentication_Api.Core.Interfaces;
+using Authentication_Api.Data.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Authentication_Api.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _userService;
+        private readonly ILogger<UserController> _logger;
+
+        public UserController(IUserService userService, ILogger<UserController> logger)
+        {
+            _userService = userService;
+            _logger = logger;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("user-login")]
+        public async Task<ActionResult<UserLoginResponseDto>> UserLogin(UserLoginRequestDto dto)
+        {
+            try
+            {
+                var result = await _userService.UserLoginAsync(dto);
+
+                _logger.LogInformation("Login successfull.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while logging in user {dto.User_Name}.", dto.User_Name);
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
+    }
+}
