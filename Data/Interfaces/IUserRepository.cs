@@ -7,5 +7,7 @@ namespace Authentication_Api.Data.Interfaces
         Task<User?> GetUserByUserNameAsync(string userName);
 
         Task<User?> GetUserByIdAsync(int id);
+
+        Task<User> CreateUserAsync(User user);
     }
 }

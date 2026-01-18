@@ -18,5 +18,12 @@ namespace Authentication_Api.Data.Repositories
 
         public async Task<User?> GetUserByIdAsync(int id) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+        public async Task<User> CreateUserAsync(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
     }
 }

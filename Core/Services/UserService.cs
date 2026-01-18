@@ -2,7 +2,9 @@ using Authentication_Api.Core.Interfaces;
 using Authentication_Api.Core.Services.JwtServices;
 using Authentication_Api.Data.Dtos;
 using Authentication_Api.Data.Interfaces;
-using Microsoft.Identity.Client;
+using Authentication_Api.Data.Models;
+using BCrypt;
+
 
 namespace Authentication_Api.Core.Services
 {
@@ -23,7 +25,7 @@ namespace Authentication_Api.Core.Services
                 throw new ArgumentException("Invalid, fields can't be empty.");
 
             var user = await _userRepo.GetUserByUserNameAsync(dto.User_Name);
-            if (user == null || user.Password != dto.Password)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
                 throw new UnauthorizedAccessException("Invalid credentials.");
 
             var token = _jwt.GenerateToken(user.Id, "User");
@@ -50,6 +52,45 @@ namespace Authentication_Api.Core.Services
                 City = user.PostalCode,
                 Email = user.Email,
                 Phone = user.Phone
+            };
+        }
+
+        public async Task<CreateUserResponseDto> CreateUserAsync(CreateUserRequestDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.User_Name) ||
+                string.IsNullOrWhiteSpace(dto.Password) ||
+                string.IsNullOrWhiteSpace(dto.FirstName) ||
+                string.IsNullOrWhiteSpace(dto.LastName) ||
+                string.IsNullOrWhiteSpace(dto.Address) ||
+                string.IsNullOrWhiteSpace(dto.PostalCode) ||
+                string.IsNullOrWhiteSpace(dto.City) ||
+                string.IsNullOrWhiteSpace(dto.Email) ||
+                string.IsNullOrWhiteSpace(dto.Phone))
+                throw new ArgumentException("Invalid, fields can't be empty.");
+
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            var user = new User
+            {
+                User_Name = dto.User_Name,
+                Password = hashedPassword,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Address = dto.Address,
+                PostalCode = dto.PostalCode,
+                City = dto.City,
+                Email = dto.Email,
+                Phone = dto.Phone
+            };
+
+            await _userRepo.CreateUserAsync(user);
+
+            return new CreateUserResponseDto
+            {
+                Message = "User successfully created.",
+                User_Name = dto.User_Name,
+                Email = dto.Email
             };
         }
     }
