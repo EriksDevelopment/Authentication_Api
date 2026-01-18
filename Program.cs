@@ -37,6 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -85,4 +86,5 @@ app.UseSwaggerUI(c =>
 });
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();
 app.Run();
