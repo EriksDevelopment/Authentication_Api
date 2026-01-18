@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Authentication_Api.Core.Interfaces;
 using Authentication_Api.Data.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -39,7 +40,32 @@ namespace Authentication_Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Something went wrong while logging in user {dto.User_Name}.", dto.User_Name);
+                _logger.LogError(ex, "Something went wrong while logging in user: {dto.User_Name}.", dto.User_Name);
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
+
+
+        [Authorize(Roles = "User")]
+        [HttpGet("user-info")]
+        public async Task<ActionResult<UserInfoResponseDto>> UserInfo()
+        {
+            try
+            {
+                var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _userService.UserInfoAsync(id);
+
+                _logger.LogInformation("Info about user retrieved successfully");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while retrieving info about user");
                 return StatusCode(500, "Something went wrong.");
             }
         }
