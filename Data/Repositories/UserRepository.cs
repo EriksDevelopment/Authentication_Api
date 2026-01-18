@@ -1,7 +1,6 @@
 using Authentication_Api.Data.Interfaces;
 using Authentication_Api.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace Authentication_Api.Data.Repositories
 {
