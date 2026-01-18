@@ -1,6 +1,6 @@
 using Authentication_Api.Data.Dtos;
 
-namespace Authentication_Api.Core.Services
+namespace Authentication_Api.Core.Interfaces
 {
     public interface IUserService
     {
