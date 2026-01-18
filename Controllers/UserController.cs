@@ -69,5 +69,27 @@ namespace Authentication_Api.Controllers
                 return StatusCode(500, "Something went wrong.");
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost("user-register")]
+        public async Task<ActionResult<CreateUserResponseDto>> CreateUser(CreateUserRequestDto dto)
+        {
+            try
+            {
+                var result = await _userService.CreateUserAsync(dto);
+
+                _logger.LogInformation("User successfully created.");
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while registering user");
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
     }
 }
