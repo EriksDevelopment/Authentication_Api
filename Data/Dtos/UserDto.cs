@@ -13,6 +13,7 @@ namespace Authentication_Api.Data.Dtos
 
     public class UserInfoResponseDto
     {
+        public string UserKey { get; set; } = null!;
         public string User_Name { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;

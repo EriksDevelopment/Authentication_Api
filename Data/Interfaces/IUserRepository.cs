@@ -13,5 +13,14 @@ namespace Authentication_Api.Data.Interfaces
         Task<User?> GetUserByEmailAsync(string email);
 
         Task<User> DeleteUserAsync(User user);
+
+        Task<bool> UserNameExistsAsync(string userName);
+
+        Task<bool> EmailExistsAsync(string email);
+
+        Task<bool> UserKeyExistsAsync(string userKey);
+
+        Task<User?> GetFriendByUserKeyAsync(string userkey);
+
     }
 }

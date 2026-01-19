@@ -35,5 +35,17 @@ namespace Authentication_Api.Data.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<bool> UserNameExistsAsync(string userName) =>
+            await _context.Users.AnyAsync(u => u.User_Name == userName);
+
+        public async Task<bool> EmailExistsAsync(string email) =>
+            await _context.Users.AnyAsync(u => u.Email == email);
+
+        public async Task<bool> UserKeyExistsAsync(string userKey) =>
+            await _context.Users.AnyAsync(u => u.UserKey == userKey);
+
+        public async Task<User?> GetFriendByUserKeyAsync(string userKey) =>
+            await _context.Users.FirstOrDefaultAsync(u => u.UserKey == userKey);
     }
 }

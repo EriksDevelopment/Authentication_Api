@@ -1,9 +1,10 @@
 using Authentication_Api.Core.Interfaces;
 using Authentication_Api.Core.Services.JwtServices;
+using Authentication_Api.Core.Services.UserKeys;
 using Authentication_Api.Data.Dtos;
 using Authentication_Api.Data.Interfaces;
 using Authentication_Api.Data.Models;
-using BCrypt;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Authentication_Api.Core.Services
@@ -44,6 +45,7 @@ namespace Authentication_Api.Core.Services
 
             return new UserInfoResponseDto
             {
+                UserKey = user.UserKey,
                 User_Name = user.User_Name,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -68,13 +70,23 @@ namespace Authentication_Api.Core.Services
                 string.IsNullOrWhiteSpace(dto.Phone))
                 throw new ArgumentException("Invalid, fields can't be empty.");
 
+            if (await _userRepo.UserNameExistsAsync(dto.User_Name))
+                throw new ArgumentException("Username already in use.");
+
+            if (await _userRepo.EmailExistsAsync(dto.Email))
+                throw new ArgumentException("Email already in use.");
+
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            var keyGenerator = new GenerateUserKeyService(_userRepo);
+            var uniqueKey = await keyGenerator.GenerateUniqueUserKeyAsync();
 
             var user = new User
             {
                 User_Name = dto.User_Name,
                 Password = hashedPassword,
+                UserKey = uniqueKey,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Address = dto.Address,

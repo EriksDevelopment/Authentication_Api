@@ -74,6 +74,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserFriendRepository, UserFriendRepository>();
+builder.Services.AddScoped<IUserFriendService, UserFriendService>();
 
 var app = builder.Build();
 

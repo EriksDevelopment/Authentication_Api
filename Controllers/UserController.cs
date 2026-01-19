@@ -92,7 +92,6 @@ namespace Authentication_Api.Controllers
             }
         }
 
-
         [Authorize(Roles = "User")]
         [HttpDelete("user-delete")]
         public async Task<ActionResult<DeleteUserResponseDto>> DeleteUser(DeleteUserRequestDto dto)
