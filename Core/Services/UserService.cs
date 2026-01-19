@@ -124,5 +124,15 @@ namespace Authentication_Api.Core.Services
                 Message = $"User with username '{user.User_Name}' successfully deleted."
             };
         }
+
+        public async Task<List<GetAllFriendsResponseDto>> GetFriendsAsync(int currentUserId)
+        {
+            var friend = await _userRepo.GetFriendByUserIdAsync(currentUserId);
+
+            return friend.Select(f => new GetAllFriendsResponseDto
+            {
+                Friend_Name = f.User_Name
+            }).ToList();
+        }
     }
 }

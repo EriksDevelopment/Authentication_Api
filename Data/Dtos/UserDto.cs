@@ -54,4 +54,9 @@ namespace Authentication_Api.Data.Dtos
     {
         public string Message { get; set; } = null!;
     }
+
+    public class GetAllFriendsResponseDto
+    {
+        public string Friend_Name { get; set; } = null!;
+    }
 }

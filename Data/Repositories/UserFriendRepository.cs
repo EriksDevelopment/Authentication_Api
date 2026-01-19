@@ -1,5 +1,6 @@
 using Authentication_Api.Data.Interfaces;
 using Authentication_Api.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Authentication_Api.Data.Repositories
 {
@@ -11,11 +12,17 @@ namespace Authentication_Api.Data.Repositories
             _context = context;
         }
 
-        public async Task<UserFriend> AddFriendAsync(UserFriend userFriend)
+        public async Task AddFriendAsync(int userId, int friendId)
         {
-            _context.UserFriends.Add(userFriend);
+            _context.UserFriends.AddRange
+            (
+                new UserFriend { UserId = userId, FriendId = friendId },
+                new UserFriend { UserId = friendId, FriendId = userId }
+            );
             await _context.SaveChangesAsync();
-            return userFriend;
         }
+
+        public async Task<bool> AlreadyFriendsAsync(int userId, int friendId) =>
+            await _context.UserFriends.AnyAsync(uf => uf.UserId == userId && uf.FriendId == friendId);
     }
 }

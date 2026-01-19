@@ -11,5 +11,7 @@ namespace Authentication_Api.Core.Interfaces
         Task<CreateUserResponseDto> CreateUserAsync(CreateUserRequestDto dto);
 
         Task<DeleteUserResponseDto> DeleteUserAsync(DeleteUserRequestDto dto);
+
+        Task<List<GetAllFriendsResponseDto>> GetFriendsAsync(int currentUserId);
     }
 }

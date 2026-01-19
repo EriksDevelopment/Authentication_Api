@@ -119,5 +119,25 @@ namespace Authentication_Api.Controllers
                 return StatusCode(500, "Something went wrong.");
             }
         }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("view-friends")]
+        public async Task<ActionResult<GetAllFriendsResponseDto>> GetFriends()
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var result = await _userService.GetFriendsAsync(userId);
+
+                _logger.LogInformation("All friends retrieved successfully.");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong while retrieving all friends.");
+                return StatusCode(500, "Something went wrong.");
+            }
+        }
     }
 }

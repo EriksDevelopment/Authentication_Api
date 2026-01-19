@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Authentication_Api.Data.Interfaces;
 using Authentication_Api.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -47,5 +48,11 @@ namespace Authentication_Api.Data.Repositories
 
         public async Task<User?> GetFriendByUserKeyAsync(string userKey) =>
             await _context.Users.FirstOrDefaultAsync(u => u.UserKey == userKey);
+
+        public async Task<List<User>> GetFriendByUserIdAsync(int userId) =>
+            await _context.UserFriends
+                .Where(uf => uf.UserId == uf.FriendId)
+                .Select(uf => uf.Friend)
+                .ToListAsync();
     }
 }

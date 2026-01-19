@@ -11,9 +11,9 @@ namespace Authentication_Api.Controllers
     public class UserFriendController : ControllerBase
     {
         private readonly IUserFriendService _userService;
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<UserFriendController> _logger;
 
-        public UserFriendController(IUserFriendService userService, ILogger<UserController> logger)
+        public UserFriendController(IUserFriendService userService, ILogger<UserFriendController> logger)
         {
             _userService = userService;
             _logger = logger;

@@ -29,16 +29,11 @@ namespace Authentication_Api.Core.Services
             if (currentUser == null)
                 throw new ArgumentException("Current user not found.");
 
-            if (currentUser.Friends.Any(f => f.FriendId == friend.Id))
+            if (await _userFriendRepo.AlreadyFriendsAsync(currentUserId, friend.Id))
                 throw new ArgumentException("Already your friend.");
 
-            var userFriend = new UserFriend
-            {
-                UserId = currentUser.Id,
-                FriendId = friend.Id
-            };
 
-            await _userFriendRepo.AddFriendAsync(userFriend);
+            await _userFriendRepo.AddFriendAsync(currentUserId, friend.Id);
 
             return new AddFriendResponseDto
             {

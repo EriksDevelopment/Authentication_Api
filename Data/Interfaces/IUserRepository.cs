@@ -22,5 +22,7 @@ namespace Authentication_Api.Data.Interfaces
 
         Task<User?> GetFriendByUserKeyAsync(string userkey);
 
+        Task<List<User>> GetFriendByUserIdAsync(int userId);
+
     }
 }
