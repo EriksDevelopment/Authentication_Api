@@ -9,5 +9,7 @@ namespace Authentication_Api.Core.Interfaces
         Task<UserInfoResponseDto> UserInfoAsync(int id);
 
         Task<CreateUserResponseDto> CreateUserAsync(CreateUserRequestDto dto);
+
+        Task<DeleteUserResponseDto> DeleteUserAsync(DeleteUserRequestDto dto);
     }
 }

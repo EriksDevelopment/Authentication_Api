@@ -42,4 +42,15 @@ namespace Authentication_Api.Data.Dtos
         public string User_Name { get; set; } = null!;
         public string Email { get; set; } = null!;
     }
+
+    public class DeleteUserRequestDto
+    {
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
+    }
+
+    public class DeleteUserResponseDto
+    {
+        public string Message { get; set; } = null!;
+    }
 }

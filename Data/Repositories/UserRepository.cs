@@ -25,5 +25,15 @@ namespace Authentication_Api.Data.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email) =>
+            await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+        public async Task<User> DeleteUserAsync(User user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
     }
 }

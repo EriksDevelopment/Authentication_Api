@@ -93,5 +93,24 @@ namespace Authentication_Api.Core.Services
                 Email = dto.Email
             };
         }
+
+        public async Task<DeleteUserResponseDto> DeleteUserAsync(DeleteUserRequestDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Email) ||
+                string.IsNullOrWhiteSpace(dto.Password))
+                throw new ArgumentException("Invalid, fields can't be empty.");
+
+            var user = await _userRepo.GetUserByEmailAsync(dto.Email);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+                throw new UnauthorizedAccessException("Invalid email or password.");
+
+            await _userRepo.DeleteUserAsync(user);
+
+            return new DeleteUserResponseDto
+            {
+                Message = $"User with username '{user.User_Name}' successfully deleted."
+            };
+        }
     }
 }
