@@ -51,7 +51,8 @@ namespace Authentication_Api.Data.Repositories
 
         public async Task<List<User>> GetFriendByUserIdAsync(int userId) =>
             await _context.UserFriends
-                .Where(uf => uf.UserId == uf.FriendId)
+                .Where(uf => uf.UserId == userId)
+                .Include(uf => uf.Friend)
                 .Select(uf => uf.Friend)
                 .ToListAsync();
     }
